@@ -21,7 +21,7 @@ options(max.print=1000000)
 # Import data
 
 ```{r}
-full = read.csv("Master_data_EFA_cut.csv")
+full = read.csv("Master_data_2021_07_01.csv")
 
 # Filling in NaN values of binaries with 0
 ## vector with binary variables
