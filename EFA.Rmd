@@ -1,0 +1,157 @@
+---
+title: "FA_Test"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+require(mosaic)
+require(foreign)
+require(tidyverse)
+require(magrittr)
+require(psych)
+require(haven)
+require(car)
+require(dplyr)
+require(paran)
+options(max.print=1000000)
+```
+
+# Import data
+
+```{r}
+full = read.csv("Master_data_EFA_cut.csv")
+
+# Filling in NaN values of binaries with 0
+## vector with binary variables
+
+binary <- c("PRE_WHYMAJ_1","PRE_WHYMAJ_2","PRE_WHYMAJ_3","PRE_WHYMAJ_4", 
+         "PRE_WHYMAJ_5","PRE_WHYMAJ_6","PRE_WHYMAJ_7","PRE_WHYMAJ_8", 
+         'PRE_WHYCS_1','PRE_WHYCS_2','PRE_WHYCS_3','PRE_WHYCS_4','PRE_WHYCS_5','PRE_WHYCS_6',
+         'PRE_WHYCS_7' )
+
+full[,binary][is.na(full[,binary])] <- 0
+
+#selecting relevant variables
+allvars <- c('PRE_ATT_SC_1', 'PRE_ATT_SC_2',
+              'PRE_ATT_SC_3','PRE_ATT_SC_4','PRE_ATT_SC_5',
+           
+              'PRE_ATT_DL_1','PRE_ATT_DL_2','PRE_ATT_DL_3',
+              'PRE_ATT_DL_4','PRE_ATT_DL_5',
+
+              'PRE_CF_MEAN', 'PRE_LK1', 'PRE_LK2', 'PRE_LK5', 
+           
+              'PRE_DAILYM', 'PRE_DAILYG','PRE_FREQEN',
+           
+              'PRE_ANX.1_1','PRE_ANX.1_2','PRE_ANX.1_3','PRE_ANX.1_4',
+           
+              'PRE_WHYMAJ_1', 'PRE_WHYMAJ_2','PRE_WHYMAJ_3', 'PRE_WHYMAJ_4',
+              'PRE_WHYMAJ_5', 'PRE_WHYMAJ_6', 'PRE_WHYMAJ_7','PRE_WHYMAJ_8',
+
+              'PRE_WHYCS_1', 
+              'PRE_WHYCS_2', 
+              'PRE_WHYCS_3', 'PRE_WHYCS_4',
+              'PRE_WHYCS_5', 'PRE_WHYCS_6',
+              'PRE_WHYCS_7'
+          )
+
+data <- full[,c(allvars)]
+
+# cleaning
+p.clean <- data[complete.cases(data),]
+
+```
+
+#correlations histogram
+```{r, fig.height = 2, fig.width = 3}
+cor<- as.data.frame(cor(p.clean))
+cord <- data.frame(cor[1])
+for (i in 2:36){
+    df <- data.frame(PRE_ATT_SC_1 = cor[,i], check.names = F)
+    cord <- bind_rows(cord, df)
+}
+
+f4 <- ggplot(cord, mapping = aes(PRE_ATT_SC_1, )) + 
+            geom_histogram(data = subset(cord, cord != 1), stat = 'bin', binwidth = .1, fill = 'darkgreen', alpha = 0.5) +
+            xlab('Correlation coefficient')
+f4
+```
+
+# Principle Component Analysis
+## Scree Plot
+```{r}
+Scree_Plot <- princomp(p.clean, cor=TRUE)
+plot(Scree_Plot,type="lines", ylim = c(1,7))
+summary(Scree_Plot)
+```
+
+# Parallel Analysis
+```{r}
+paran(p.clean, iterations = 1000, centile = 0, quietly = FALSE, 
+    status = TRUE, all = TRUE, cfa = TRUE, graph = TRUE, color = TRUE, 
+    col = c("black", "red", "blue"), lty = c(1, 2, 3), lwd = 1, legend = TRUE, 
+    file = "", width = 640, height = 640, grdevice = "png", seed = 0)
+```
+
+
+# EFA
+## Select variables of interest + cleaning
+```{r}
+#selecting relevant variables for generating factor loadings
+## variables that did not load or cross loaded are commented out
+
+vars <- c('PRE_ATT_SC_1', 
+          # 'PRE_ATT_SC_2', 'PRE_ATT_SC_3',
+          'PRE_ATT_SC_4','PRE_ATT_SC_5',
+          
+          'PRE_ANX.1_1','PRE_ANX.1_2','PRE_ANX.1_3','PRE_ANX.1_4',
+          
+          'PRE_LK1', 'PRE_LK2', 'PRE_LK5',
+          # 'PRE_CF_MEAN', 
+       
+          'PRE_ATT_DL_1',
+          # 'PRE_ATT_DL_2','PRE_ATT_DL_3',
+          'PRE_ATT_DL_4','PRE_ATT_DL_5',
+
+          'PRE_WHYCS_3','PRE_WHYCS_5', 'PRE_WHYCS_6',
+          # 'PRE_WHYCS_1', 'PRE_WHYCS_2', 'PRE_WHYCS_4', 'PRE_WHYCS_7'
+       
+          'PRE_DAILYM', 'PRE_DAILYG','PRE_FREQEN'
+       
+          # 'PRE_WHYMAJ_1','PRE_WHYMAJ_2','PRE_WHYMAJ_3', 'PRE_WHYMAJ_4',
+          # 'PRE_WHYMAJ_5', 'PRE_WHYMAJ_6', 'PRE_WHYMAJ_7','PRE_WHYMAJ_8',
+
+          )
+
+efa.clean <- p.clean[,vars]
+
+```
+
+## Factor Analysis (Spearman)
+```{r}
+## Generating a correlation matrix
+cor <- cor(efa.clean, use="complete.obs", method = "spearman")
+
+## Oblimin Factor Analysis with Promax rotation
+factorsol <-  fa(r=cor, nfactors = 6,fm="ml", rotate ="promax",  oblique.scores = TRUE, max.iter = 25)
+
+print.psych(factorsol, cut = 0.30 ,sort = T)
+fa2latex(factorsol)
+```
+
+## Export
+
+```{r}
+# Extracting the loadings into a table for export
+loadings <- factorsol$loadings[c(1:ncol(efa.clean)),]
+loadings <- apply(loadings, 2, function(x) ifelse(abs(x)>0.4,x, vector()))
+
+#export factor loadings for use in Python
+write.csv(loadings,'factorloadings_v5lab.csv', row.names = T)
+```
+
+
+
+
+

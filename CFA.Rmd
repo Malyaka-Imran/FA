@@ -1,0 +1,82 @@
+---
+title: "CFA"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+require(mosaic)
+require(psych)
+require(haven)
+require(lavaan) # for CFA
+
+```
+
+# Import data
+
+```{r}
+full = read.csv("Master_data_CFA_cut.csv")
+```
+
+# Cleaning
+```{r}
+# Filling in NaN values of binaries with 0
+## vector with binary variables
+
+binary <- c("PRE_WHYMAJ_1","PRE_WHYMAJ_2","PRE_WHYMAJ_3","PRE_WHYMAJ_4", 
+         "PRE_WHYMAJ_5","PRE_WHYMAJ_6","PRE_WHYMAJ_7","PRE_WHYMAJ_8", 
+         'PRE_WHYCS_1','PRE_WHYCS_2','PRE_WHYCS_3','PRE_WHYCS_4','PRE_WHYCS_5','PRE_WHYCS_6',
+         'PRE_WHYCS_7' )
+
+full[,binary][is.na(full[,binary])] <- 0
+
+#selecting relevant variables
+
+vars <- c('PRE_ATT_SC_1', 
+          # 'PRE_ATT_SC_2', 'PRE_ATT_SC_3',
+          'PRE_ATT_SC_4','PRE_ATT_SC_5',
+          
+          'PRE_ANX.1_1','PRE_ANX.1_2','PRE_ANX.1_3','PRE_ANX.1_4',
+          
+          'PRE_LK1', 'PRE_LK2', 'PRE_LK5',
+          # 'PRE_CF_MEAN', 
+       
+          'PRE_ATT_DL_1',
+          # 'PRE_ATT_DL_2','PRE_ATT_DL_3',
+          'PRE_ATT_DL_4','PRE_ATT_DL_5',
+
+          'PRE_WHYCS_3','PRE_WHYCS_5', 'PRE_WHYCS_6',
+          # 'PRE_WHYCS_1', 'PRE_WHYCS_2', 'PRE_WHYCS_4', 'PRE_WHYCS_7'
+       
+          'PRE_DAILYM', 'PRE_DAILYG','PRE_FREQEN'
+       
+          # 'PRE_WHYMAJ_1','PRE_WHYMAJ_2','PRE_WHYMAJ_3', 'PRE_WHYMAJ_4',
+          # 'PRE_WHYMAJ_5', 'PRE_WHYMAJ_6', 'PRE_WHYMAJ_7','PRE_WHYMAJ_8',
+
+          )
+
+# selecting relevant variables
+data <- full[,c(vars)]
+
+# Cleaning
+d.clean <- data[complete.cases(data),] 
+
+```
+
+```{r}
+# creating factor model
+
+cfa.model <- 'schmath =~ PRE_ATT_SC_1 + PRE_ATT_SC_4 + PRE_ATT_SC_5
+              selfeff =~ PRE_LK1 + PRE_LK2 + PRE_LK5 
+              numanx =~ PRE_ANX.1_1 + PRE_ANX.1_2  + PRE_ANX.1_3  + PRE_ANX.1_4
+              numrel =~ PRE_DAILYM + PRE_DAILYG + PRE_FREQEN 
+              expect =~ PRE_WHYCS_3 +  PRE_WHYCS_5 + PRE_WHYCS_6 
+              dlmath =~ PRE_ATT_DL_1 + PRE_ATT_DL_4 + PRE_ATT_DL_5'
+
+# fitting model
+fit <- cfa(cfa.model, d.clean)
+summary(fit, fit.measures=T)      
+
+semPlot::semPaths(fit, "std")
+
+```

@@ -4,7 +4,7 @@ import pandas as pd
 
 print('Merging...')
 # Collect names of all files in data file with .csv extension into a list
-files = glob.glob('./Master_data_S20_*.csv', recursive = True)
+files = glob.glob('*.csv', recursive = True)
 print(files)
 
 # Removing './' that are included in the file name
