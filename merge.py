@@ -41,7 +41,7 @@ def merge(nomatch_pre, nomatch_post, df_pre, df_post, pairs):
 
     # Get the list of column names, for PRE and PST DF
     columns = columns_pre + columns_post
-
+    print("starting pairs")
     # Add by row for the pairs section of the dataframes
     for i in range(len(pairs)):
         df_pre.loc[pairs[i][0], "PRE_WHICHADMIN"] = 2
@@ -50,7 +50,7 @@ def merge(nomatch_pre, nomatch_post, df_pre, df_post, pairs):
         right = df_post.loc[pairs[i][1],:]
         concat = pd.concat([left,right], ignore_index=True,axis=0)
         df = df.append(concat, ignore_index=True)
-    
+    print("first for loop done")
     # Add by row for the pre-nomatches
     for i in range(len(nomatch_pre)):
         df_pre.loc[nomatch_pre[i], "PRE_WHICHADMIN"] = 0
@@ -59,7 +59,7 @@ def merge(nomatch_pre, nomatch_post, df_pre, df_post, pairs):
         concat = pd.concat([left,right], ignore_index=True,axis=0)
         df = df.append(concat, ignore_index=True)
     numCol_df = len(df.columns)
-
+    print("second for loop")
     # Add by row for the post-nomatches
     for i in range(len(nomatch_post)):
         df_post.loc[nomatch_post[i], "PST_WHICHADMIN"] = 1
@@ -68,10 +68,10 @@ def merge(nomatch_pre, nomatch_post, df_pre, df_post, pairs):
         concat = pd.concat([left,right], ignore_index=True,axis=0)
         df = df.append(concat, ignore_index=True)
     df = df.iloc[:,0:numCol_df]
-
+    print("creating big df")
     # Create one big dataframe with the right column names
     df_1 = pd.DataFrame(data = pd.DataFrame.to_numpy(df), columns=columns)
-    
+    print("allocate empty rows")
     # Allocate (empty for now) columns for info that will be imported from the instructor db
     df_1[['MRG_CRS_TYP','MRG_CRS_SUBJ','MRG_SCHL_TYPE','MRG_CRS_CRED']] = np.nan
 
@@ -88,10 +88,11 @@ def merge(nomatch_pre, nomatch_post, df_pre, df_post, pairs):
             df_1.loc[i,'RESPONSE_ID'] = df_1.loc[i,'PST_ResponseId']
     
     # Order the column names
+    print("smth about pickle")
     with open('nameorder.pkl', 'rb') as f:
         nameorder = pickle.load(f)
 
     df_pub_cut = df_1[nameorder]
     df_pub = copy.deepcopy(df_pub_cut)
-
+    print("this is the end")
     return df_pub

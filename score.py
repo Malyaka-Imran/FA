@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 import pandas as pd
 import numpy as np
 
-def score(data, semester, year, season, answer_key):
+def score(data, semester, year, season, answer_key,string):
     '''
     Edited for efficiency + documentation + robustness:
         Chloe Wohlgemuth, 01.08.21 + 02.04.21
@@ -39,10 +39,10 @@ def score(data, semester, year, season, answer_key):
     # Read in dataset
     preOrPost = semester + "_Q" # question = 'PRE_Q' or 'PST_Q'
     try:
-        #data = pd.read_csv(db, encoding = 'utf-8', skiprows = [1,2], header = 0)
+        data = pd.read_csv(data, encoding = 'utf-8', skiprows = [1,2], header = 0)
         df = pd.read_csv(answer_key, encoding = 'utf-8')
     except(UnicodeDecodeError):
-        #data = pd.read_csv(db, encoding = 'ISO-8859-1', skiprows = [1,2], header = 0)
+        data = pd.read_csv(data, encoding = 'ISO-8859-1', skiprows = [1,2], header = 0)
         df = pd.read_csv(answer_key, encoding = 'ISO-8859-1')
     
     columns = list(data.columns.values)
@@ -200,7 +200,7 @@ def score(data, semester, year, season, answer_key):
         else:
             data.loc[participant, semester + '_COMPFLAG'] = 0
 
-    eff_scores = {1:0, 2:0, 3:0.5, 4:1, 5:1, "I didn’t try very hard":0, "I tried for a while and then got bored":0, "I tried pretty hard":0.5, "I tried my best on all or most of the questions":1}
+    eff_scores = {1:0, 2:0, 3:0.5, 4:1, 5:1, 6:0, "I didn’t try very hard":0, "I tried for a while and then got bored":0, "I tried pretty hard":0.5, "I tried my best on all or most of the questions":1,"I just clicked through and chose randomly to get the participation credit":0}
     def scoreEffort(participant, semester):        
         #import pdb;pdb.set_trace()
         effort_response = data.loc[participant, semester + '_EFFORT']

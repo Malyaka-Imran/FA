@@ -137,7 +137,7 @@ cor <- cor(efa.clean, use="complete.obs", method = "spearman")
 factorsol <-  fa(r=cor, nfactors = 6,fm="ml", rotate ="promax",  oblique.scores = TRUE, max.iter = 25)
 
 print.psych(factorsol, cut = 0.30 ,sort = T)
-fa2latex(factorsol)
+#fa2latex(factorsol)
 ```
 
 ## Export

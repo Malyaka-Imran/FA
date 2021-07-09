@@ -1,0 +1,107 @@
+Question #,Plain Text Answer,Answer Code,Correct Answer
+31,1 gallon,1,3
+31,9 gallons,2,3
+31,13 gallons,3,3
+31,231 gallons,4,3
+31,3000 gallons,5,3
+15,the 20 ounce jar,1,3
+15,the 45 ounce jar,2,3
+15,the jars are both the same price per ounce,3,3
+12,"750,000",1,3
+12,1 million,2,3
+12,1.25 million,3,3
+12,1.5 million,4,3
+12,1.75 million,5,3
+13,3 million,1,2
+13,4 million,2,2
+13,5 million,3,2
+13,more than 5 million,4,2
+14,"After 1970, the population grew at one-quarter of the pre-1970 rate",1,4
+14,"After 1970, the population grew at one-half of the pre-1970 rate",2,4
+14,"After 1970, the population grew at two times the pre-1970 rate",3,4
+14,"After 1970, the population grew at four times the pre-1970 rate",4,4
+14,The population growth rates were the same before and after 1970,5,4
+32,1%,1,4
+32,5%,2,4
+32,9%,3,4
+32,10%,4,4
+26,694,1,2
+26,700,2,2
+26,"22,452",3,2
+26,"23,152",4,2
+27,less than 1%,1,3
+27,about 2%,2,3
+27,about 3%,3,3
+27,more than 4%,4,3
+5,the 1 cup line,1,2
+5,the 1 and 1/4 cup line,2,2
+5,the 1 and 1/2 cup line,3,2
+5,the 1 and 3/4 cup line,4,2
+6,6 ounces,1,3
+6,8 ounces,2,3
+6,12 ounces,3,3
+6,14 ounces,4,3
+7,half full,1,4
+7,two-thirds full,2,4
+7,three-quarters full,3,4
+7,five-sixths full,4,4
+7,full once and then another one-quarter full,5,4
+29,More people will watch Show A in City 1,1,3
+29,More people will watch Show A in City 2,2,3
+29,Either (a) or (b) could be true,3,3
+23,fewer than 1 in 100,1,4
+23,about 1 in 10,2,4
+23,about 1 in 6,3,4
+23,about 1 in 3,4,4
+28,$42 per month,1,2
+28,$45 per month,2,2
+28,$48 per month,3,2
+28,$54 per month,4,2
+19,"$15,000 ",1,2
+19,"$150,000 ",2,2
+19,"$1,500,000 ",3,2
+19,"$15,000,000 ",4,2
+30,Only Prediction 1 is supported by the graph,1,1
+30,Predictions 1 and 2 are both supported by the graph,2,1
+30,Predictions 1 and 3 are both supported by the graph,3,1
+30,All three predictions are supported by the graph,4,1
+30,None of the predictions are supported by the graph,5,1
+10,two times,1,2
+10,four times,2,2
+10,five times,3,2
+10,twenty times,4,2
+10,none of the above,5,2
+11,three,1,1
+11,five,2,1
+11,nine,3,1
+11,nineteen,4,1
+20,228 to 252 people,1,4
+20,220 to 240 people,2,4
+20,240 to 260 people,3,4
+20,220 to 260 people,4,4
+21,165,1,1
+21,171,2,1
+21,175,3,1
+21,180,4,1
+21,195,5,1
+33,$52.50 more,1,3
+33,$105 more,2,3
+33,$450 more,3,3
+33,more than $500 more,4,3
+3,a coupon for 25% off the sale price,1,2
+3,a coupon for $25 off the sale price,2,2
+3,Both coupons will result in the same final price,3,2
+16,16,1,2
+16,18,2,2
+16,22,3,2
+16,24,4,2
+34,about 100 square feet,1,4
+34,about 150 square feet,2,4
+34,about 250 square feet,3,4
+34,about 350 square feet,4,4
+34,about 750 square feet,5,4
+35,11,1,3
+35,16,2,3
+35,32,3,3
+35,64,4,3
+35,128,5,3
