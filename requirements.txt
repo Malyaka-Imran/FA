@@ -1,0 +1,2 @@
+factor-analyzer (to install, use: pip install factor-analyzer)
+Pandas, version 0.24.0 or later (to update, use: pip install --upgrade pandas)
